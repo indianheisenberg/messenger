@@ -31,3 +31,30 @@ APIs
      
 6. /getExpectedMessagesForWeek
      API returns the expected number of messages to be sent for the rest of the week.
+     
+     
+
+NOTES:
+
+1. Mandatory Fields in the Message body
+    sender,receiver,subject,content,sentDate,sentTime
+    
+2. Basic algorithm behind API /getExpectedMessagesForToday
+    1. Calculate the current time
+    2. loop over the last 7 days
+    3. get the messages sent on the past day
+    4. check how many messages were sent after the current time on that day.
+    5. Sum all such message counts
+    6. Get average of the messages sent on these days.
+    7. The average number sent on the past 7 days after the current time should reflect on how many messages could be sent for the rest        of the day.
+    
+ 3. Basic algorithm behind API /getExpectedMessagesForWeek
+    1. calucalte the current day of the week.
+    2. Get number of messages sent in current week.
+    3. Get average number of messages sent in last 3 weeks.
+    4. Number of messages left to be sent this week should be equal to the average of the last three weeks minus the messages sent in          the current week.
+    
+  4. Mongo DB Uri used:
+     spring.data.mongodb.uri=mongodb://127.0.0.1:27017/messenger
+
+  
