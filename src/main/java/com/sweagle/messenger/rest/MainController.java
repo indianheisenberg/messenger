@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sweagle.messenger.beans.Message;
-import com.sweagle.messenger.repo.MessageRepo;
+import com.sweagle.messenger.service.MessageService;
 
 /**
  * @author ashish agrawal
@@ -25,22 +25,19 @@ import com.sweagle.messenger.repo.MessageRepo;
 @RequestMapping("/")
 public class MainController {
 	
+	
 	@Autowired
-	private MessageRepo messageRepo;
+	private MessageService messageService;
 	
+
 	
-	/**
-	 * @author ashish agrawal
-	 * @param receiver
-	 * @return list of messages received by a user
-	 */
 	@GetMapping("/getIncomingMessages/{reciever}")
 	public ResponseEntity<List<Message>> getIncomingMessages(@PathVariable(value = "reciever") String receiver){
 		
 		List<Message> listOfMessages=new ArrayList<Message>();
 		
 		try {
-			listOfMessages=messageRepo.getMessageByReceiver(receiver);
+			listOfMessages=messageService.getIncomingMessages(receiver);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -49,21 +46,18 @@ public class MainController {
 		return ResponseEntity.ok().body(listOfMessages);
 		
 		
+		
 	}
 	
 	
-	/**
-	 * @author ashish agrawal
-	 * @param sender
-	 * @return list of messages sent by the sender
-	 */
+	
 	@GetMapping("/getSentMessages/{sender}")
 	public ResponseEntity<List<Message>> getSentMessages(@PathVariable(value = "sender") String sender){
 		
 		
 		List<Message> listOfMessages=new ArrayList<Message>();
 		try {
-			listOfMessages=messageRepo.getMessageBySender(sender);
+			listOfMessages=messageService.getSentMessages(sender);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -75,11 +69,7 @@ public class MainController {
 	}
 	
 	
-	/**
-	 * @author ashish agrawal
-	 * @param id
-	 * @return message with the message id
-	 */
+	
 	@GetMapping("/getMessageById/{id}")
 	public ResponseEntity<Message> getMessageById(@PathVariable(value="id") String id){
 		
@@ -87,7 +77,7 @@ public class MainController {
 		Message message = new Message();
 		
 		try {
-			message=messageRepo.getMessageById(id);
+			message=messageService.getMessageById(id);
 			
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -99,14 +89,10 @@ public class MainController {
 	}
 	
 	
-	/**
-	 * @author ashish agrawal
-	 * @param message
-	 * @return message which is saved in mongo
-	 */
+	
 	@PostMapping("/saveMessage")
 	public Message saveMessages(@Valid @RequestBody Message message) {
-		return messageRepo.save(message);
+		return messageService.saveMessages(message);
 		
 	
 	}
@@ -114,35 +100,30 @@ public class MainController {
 	@GetMapping("/home")
 	public String welcomeMessage() {
 		
+		System.out.println("HOME");
 		return "welcome page";
 	}
 	
 	
 	
-	/**
-	 * @author ashish agrawal
-	 * @return expected number of messages to be sent today
-	 */
+	
 	@GetMapping("/getExpectedMessagesForToday")
 	public String getExpectedMessagesForToday() {
 		
-		int count=0;
-		
+	
 		//algo for expected messages for today
-		return "Expected Messages for today : "+count;
+		return "Expected number of messages for the rest of the day"+messageService.getExpectedMessagesForToday();
 	}
 	
-	/**
-	 * @author ashish agrawal
-	 * @return expected number of messages to be sent the entire week
-	 */
+	
+	
 	@GetMapping("/getExpectedMessagesForWeek")
 	public String getExpectedMessagesForWeek() {
 		
-		int count=0;
+	
 		
 		//algo for expected messages for today
-		return "Expected Messages for the week : "+count;
+		return "Expected number of messages for the rest of the week"+messageService.getExpectedMessagesForWeek();
 	}
 	
 	

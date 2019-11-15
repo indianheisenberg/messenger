@@ -11,6 +11,24 @@ public class Message {
 	private String subject;
 	private String content;
 	private String sentDate;
+	private String sentTime;
+	
+	
+	
+	public Message(String id, String sender, String receiver, String subject, String content, String sentDate,String sentTime) {
+		this.id = id;
+		this.sender = sender;
+		this.receiver = receiver;
+		this.subject = subject;
+		this.content = content;
+		this.sentDate = sentDate;
+		this.sentTime=sentTime;
+	}
+	
+	public Message() {
+		
+	}
+	
 	public String getId() {
 		return id;
 	}
@@ -47,10 +65,19 @@ public class Message {
 	public void setSentDate(String sentDate) {
 		this.sentDate = sentDate;
 	}
+	
 	@Override
 	public String toString() {
-		return "Message [id=" + id + ", sender=" + sender + ", reciever=" + receiver + ", subject=" + subject
-				+ ", content=" + content + ", sentDate=" + sentDate + "]";
+		return "Message [id=" + id + ", sender=" + sender + ", receiver=" + receiver + ", subject=" + subject
+				+ ", content=" + content + ", sentDate=" + sentDate + ", sentTime=" + sentTime + "]";
+	}
+
+	public String getSentTime() {
+		return sentTime;
+	}
+
+	public void setSentTime(String sentTime) {
+		this.sentTime = sentTime;
 	}
 	
 	

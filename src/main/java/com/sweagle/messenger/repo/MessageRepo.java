@@ -14,4 +14,6 @@ public interface MessageRepo extends MongoRepository<Message,String> {
 	public List<Message> getMessageBySender(String sender);
 	public List<Message> getMessageByReceiver(String receiver);
 	public Message getMessageById(String id);
+	
+	public List<Message> getMessageBySentDate(String sentDate);
 }
